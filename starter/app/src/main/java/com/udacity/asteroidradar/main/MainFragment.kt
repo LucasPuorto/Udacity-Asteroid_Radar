@@ -1,27 +1,38 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.AsteroidClickListener
+import com.udacity.asteroidradar.AsteroidsAdapter
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), AsteroidClickListener {
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    private val adapter: AsteroidsAdapter by lazy { AsteroidsAdapter(this) }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 
         setHasOptionsMenu(true)
-
+        setupRecyclerView(binding)
         return binding.root
     }
 
@@ -32,5 +43,29 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return true
+    }
+
+    override fun asteroidClick(asteroid: Asteroid) {
+        Toast.makeText(activity, "click", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setupRecyclerView(binding: FragmentMainBinding) {
+        binding.asteroidRecycler.adapter = adapter
+        val list = mutableListOf<Asteroid>()
+        for (i in 0..40) {
+            list.add(
+                Asteroid(
+                    id = i.toLong(),
+                    codename = "name",
+                    closeApproachDate = "10/07/2021",
+                    absoluteMagnitude = 100000.0,
+                    estimatedDiameter = 200000.0,
+                    relativeVelocity = 300000.0,
+                    distanceFromEarth = 400000.0,
+                    isPotentiallyHazardous = (i % 2) == 0
+                )
+            )
+        }
+        adapter.addAsteroidsList(list)
     }
 }
