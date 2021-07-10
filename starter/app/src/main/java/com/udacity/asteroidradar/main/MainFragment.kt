@@ -1,16 +1,15 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.AsteroidClickListener
 import com.udacity.asteroidradar.AsteroidsAdapter
@@ -46,7 +45,7 @@ class MainFragment : Fragment(), AsteroidClickListener {
     }
 
     override fun asteroidClick(asteroid: Asteroid) {
-        Toast.makeText(activity, "click", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
     }
 
     private fun setupRecyclerView(binding: FragmentMainBinding) {
