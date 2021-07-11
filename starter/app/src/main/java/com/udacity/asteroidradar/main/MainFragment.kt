@@ -29,9 +29,10 @@ class MainFragment : Fragment(), AsteroidClickListener {
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
+        binding.asteroidRecycler.adapter = adapter
 
         setHasOptionsMenu(true)
-        setupRecyclerView(binding)
+        observe()
         return binding.root
     }
 
@@ -48,23 +49,9 @@ class MainFragment : Fragment(), AsteroidClickListener {
         findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
     }
 
-    private fun setupRecyclerView(binding: FragmentMainBinding) {
-        binding.asteroidRecycler.adapter = adapter
-        val list = mutableListOf<Asteroid>()
-        for (i in 0..40) {
-            list.add(
-                Asteroid(
-                    id = i.toLong(),
-                    codename = "name",
-                    closeApproachDate = "10/07/2021",
-                    absoluteMagnitude = 100000.0,
-                    estimatedDiameter = 200000.0,
-                    relativeVelocity = 300000.0,
-                    distanceFromEarth = 400000.0,
-                    isPotentiallyHazardous = (i % 2) == 0
-                )
-            )
-        }
-        adapter.addAsteroidsList(list)
+    private fun observe() {
+        viewModel.asteroidsLiveData.observe(viewLifecycleOwner, {
+            adapter.addAsteroidsList(it)
+        })
     }
 }
