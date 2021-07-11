@@ -76,8 +76,13 @@ This branch is going to let you start working with it. The command to check out 
 ```bash
 git checkout master
 ```
+**Step 3: Put ApiKey value in the local.properties file with variable name API_KEY
 
-**Step 3: Run the project and check that it compiles correctly**
+```bash
+API_KEY = "INSERT YOUR APIKEY VALUE"
+```
+
+Step 4: Run the project and check that it compiles correctly
 
 Open the project in Android Studio and click the Run ‘app’ button, check that it runs correctly and you can see the app in your device or emulator.
 
